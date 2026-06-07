@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design System — Clean Shopper</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --color-bg: #FAF7F1;
+    --color-surface: #FFFFFF;
+    --color-text: #23291F;
+    --color-text-muted: #5E6356;
+    --color-accent: #2B8463;
+    --color-accent-hover: #237055;
+    --color-border: #E7E2D8;
+    --color-success: #2F7D4F;
+    --color-warning: #B8860B;
+    --color-error: #B23B33;
+    --color-info: #3A6E8F;
+
+    --font-display: "Fraunces", serif;
+    --font-body: "Plus Jakarta Sans", sans-serif;
+    --text-display: 3.052rem;
+    --text-h1: 2.441rem;
+    --text-h2: 1.953rem;
+    --text-h3: 1.563rem;
+    --text-body: 1rem;
+    --text-small: 0.8rem;
+    --leading-tight: 1.15;
+    --leading-normal: 1.6;
+
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2.5rem;
+    --space-2xl: 4rem;
+
+    --radius-sm: 0.375rem;
+    --radius-md: 0.625rem;
+    --radius-lg: 1rem;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 2px rgba(35,41,31,0.05);
+    --shadow-md: 0 6px 18px rgba(35,41,31,0.07);
+    --shadow-lg: 0 16px 40px rgba(35,41,31,0.10);
+  }
+  /* === end tokens === */
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+  header.page { margin-bottom: var(--space-2xl); }
+  header.page h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    margin: 0 0 var(--space-sm);
+  }
+  header.page p { color: var(--color-text-muted); margin: 0; max-width: 60ch; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: var(--text-small);
+    color: var(--color-accent);
+    font-weight: 600;
+    margin: 0 0 var(--space-sm);
+  }
+
+  section { margin-bottom: var(--space-2xl); }
+  section > h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    margin: 0 0 var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* color swatches */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-md); }
+  .swatch { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+  .swatch .chip { height: 72px; }
+  .swatch .meta { padding: var(--space-sm) var(--space-md); }
+  .swatch .name { font-weight: 600; font-size: 0.9rem; }
+  .swatch .hex { color: var(--color-text-muted); font-size: var(--text-small); font-family: ui-monospace, monospace; }
+  .swatch .use { color: var(--color-text-muted); font-size: var(--text-small); margin-top: 2px; }
+
+  /* type specimens */
+  .type-row { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-border); }
+  .type-row:last-child { border-bottom: none; }
+  .type-label { font-size: var(--text-small); color: var(--color-text-muted); font-family: ui-monospace, monospace; margin-bottom: var(--space-xs); }
+  .d-display { font-family: var(--font-display); font-size: var(--text-display); line-height: var(--leading-tight); font-weight: 600; }
+  .d-h1 { font-family: var(--font-display); font-size: var(--text-h1); line-height: var(--leading-tight); font-weight: 600; }
+  .d-h2 { font-family: var(--font-display); font-size: var(--text-h2); line-height: var(--leading-tight); font-weight: 600; }
+  .d-h3 { font-family: var(--font-display); font-size: var(--text-h3); font-weight: 500; }
+  .d-body { font-size: var(--text-body); max-width: 60ch; }
+  .d-small { font-size: var(--text-small); color: var(--color-text-muted); }
+
+  /* spacing scale */
+  .space-scale { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .space-item { display: flex; align-items: center; gap: var(--space-md); }
+  .space-item .bar { background: var(--color-accent); height: 16px; border-radius: var(--radius-sm); }
+  .space-item .tag { font-family: ui-monospace, monospace; font-size: var(--text-small); color: var(--color-text-muted); min-width: 110px; }
+
+  /* radius + shadow */
+  .box-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-lg); }
+  .demo-box { background: var(--color-surface); border: 1px solid var(--color-border); padding: var(--space-lg); text-align: center; font-size: var(--text-small); color: var(--color-text-muted); }
+
+  /* components */
+  .components { display: grid; gap: var(--space-lg); }
+  .btn { font-family: var(--font-body); font-size: var(--text-body); font-weight: 500; padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; }
+  .btn-primary { background: var(--color-accent); color: #fff; }
+  .btn-primary:hover { background: var(--color-accent-hover); }
+  .btn-secondary { background: transparent; color: var(--color-accent); border-color: var(--color-accent); }
+  .btn-secondary:hover { color: var(--color-accent-hover); border-color: var(--color-accent-hover); }
+  .btn-disabled { background: var(--color-border); color: var(--color-text-muted); cursor: not-allowed; }
+  .btn-row { display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center; }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-lg);
+    max-width: 360px;
+  }
+  .card h3 { font-family: var(--font-display); font-size: var(--text-h3); font-weight: 500; margin: 0 0 var(--space-sm); }
+  .card p { margin: 0 0 var(--space-md); color: var(--color-text-muted); }
+
+  /* clean-standards badges */
+  .badge-row { display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center; }
+  .badge {
+    font-size: var(--text-small); font-weight: 600;
+    padding: 2px var(--space-sm); border-radius: var(--radius-full);
+    display: inline-flex; align-items: center; gap: 4px; line-height: 1.4;
+  }
+  .badge-success { color: var(--color-success); background: rgba(47,125,79,0.12); }
+  .badge-error { color: var(--color-error); background: rgba(178,59,51,0.12); }
+  .badge-cert { color: var(--color-text-muted); background: var(--color-surface); border: 1px solid var(--color-border); }
+
+  .field { display: flex; flex-direction: column; gap: var(--space-xs); max-width: 360px; }
+  .field label { font-size: var(--text-small); font-weight: 500; }
+  .field input {
+    font-family: var(--font-body); font-size: var(--text-body);
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border); border-radius: var(--radius-md);
+    background: var(--color-surface); color: var(--color-text);
+  }
+  .field input:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent); }
+
+  a.demo-link { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  a.demo-link:hover { color: var(--color-accent-hover); }
+
+  footer.page { margin-top: var(--space-2xl); padding-top: var(--space-lg); border-top: 1px solid var(--color-border); color: var(--color-text-muted); font-size: var(--text-small); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <p class="eyebrow">Design System</p>
+    <h1>Clean Shopper</h1>
+    <p><strong>Direction:</strong> Natural &amp; warm, one forest-green accent on cream &nbsp;·&nbsp; <strong>Feeling:</strong> Trustworthy &amp; approachable, wellness sensibility — credible, not clinical</p>
+  </header>
+
+  <!-- COLOR -->
+  <section>
+    <h2>Color</h2>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:var(--color-bg)"></div><div class="meta"><div class="name">Background</div><div class="hex">#FAF7F1</div><div class="use">Warm cream page bg</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-surface)"></div><div class="meta"><div class="name">Surface</div><div class="hex">#FFFFFF</div><div class="use">Cards, messages</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-text)"></div><div class="meta"><div class="name">Text primary</div><div class="hex">#23291F</div><div class="use">Headings, body</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-text-muted)"></div><div class="meta"><div class="name">Text muted</div><div class="hex">#5E6356</div><div class="use">Secondary text</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-accent)"></div><div class="meta"><div class="name">Accent</div><div class="hex">#2B8463</div><div class="use">Actions, links</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-accent-hover)"></div><div class="meta"><div class="name">Accent hover</div><div class="hex">#237055</div><div class="use">Hover state</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-border)"></div><div class="meta"><div class="name">Border</div><div class="hex">#E7E2D8</div><div class="use">Dividers, inputs</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-success)"></div><div class="meta"><div class="name">Success</div><div class="hex">#2F7D4F</div><div class="use">Meets standards</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-warning)"></div><div class="meta"><div class="name">Warning</div><div class="hex">#B8860B</div><div class="use">Check this</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-error)"></div><div class="meta"><div class="name">Error</div><div class="hex">#B23B33</div><div class="use">Avoided / errors</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-info)"></div><div class="meta"><div class="name">Info</div><div class="hex">#3A6E8F</div><div class="use">Information</div></div></div>
+    </div>
+    <p class="d-small" style="margin-top:var(--space-md)">
+      Contrast (WCAG AA): Text primary on Background ~14:1 (passes AAA) · Text muted on Background ~5.8:1 (pass) · White on Accent ~4.6:1 (pass) · Accent links on Background ~4.3:1 (under body 4.5:1 — links are underlined; use Accent hover ~5.6:1 for dense link text).
+    </p>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section>
+    <h2>Typography</h2>
+    <div class="type-row"><div class="type-label">Display · Fraunces 600 · 3.052rem / 1.1</div><div class="d-display">Cleaner choices, made simple</div></div>
+    <div class="type-row"><div class="type-label">H1 · Fraunces 600 · 2.441rem</div><div class="d-h1">Cleaner choices, made simple</div></div>
+    <div class="type-row"><div class="type-label">H2 · Fraunces 600 · 1.953rem</div><div class="d-h2">What should we research today?</div></div>
+    <div class="type-row"><div class="type-label">H3 · Fraunces 500 · 1.563rem</div><div class="d-h3">Branch Basics Concentrate</div></div>
+    <div class="type-row"><div class="type-label">Body · Plus Jakarta Sans 400 · 1rem / 1.6</div><div class="d-body">This one meets all of your saved standards — no synthetic fragrance, EWG Verified, and from a brand you've trusted before. Good body copy stays readable at sixty characters per line and holds a comfortable rhythm down the page.</div></div>
+    <div class="type-row"><div class="type-label">Small · Plus Jakarta Sans 400 · 0.8rem</div><div class="d-small">Per EWG's Skin Deep, last checked today.</div></div>
+  </section>
+
+  <!-- SPACING -->
+  <section>
+    <h2>Spacing</h2>
+    <div class="space-scale">
+      <div class="space-item"><span class="tag">xs · 0.25rem · 4px</span><span class="bar" style="width:var(--space-xs)"></span></div>
+      <div class="space-item"><span class="tag">sm · 0.5rem · 8px</span><span class="bar" style="width:var(--space-sm)"></span></div>
+      <div class="space-item"><span class="tag">md · 1rem · 16px</span><span class="bar" style="width:var(--space-md)"></span></div>
+      <div class="space-item"><span class="tag">lg · 1.5rem · 24px</span><span class="bar" style="width:var(--space-lg)"></span></div>
+      <div class="space-item"><span class="tag">xl · 2.5rem · 40px</span><span class="bar" style="width:var(--space-xl)"></span></div>
+      <div class="space-item"><span class="tag">2xl · 4rem · 64px</span><span class="bar" style="width:var(--space-2xl)"></span></div>
+    </div>
+  </section>
+
+  <!-- RADIUS + SHADOW -->
+  <section>
+    <h2>Radius &amp; elevation</h2>
+    <div class="box-grid">
+      <div class="demo-box" style="border-radius:var(--radius-sm)">radius sm · 6px</div>
+      <div class="demo-box" style="border-radius:var(--radius-md)">radius md · 10px</div>
+      <div class="demo-box" style="border-radius:var(--radius-lg)">radius lg · 16px</div>
+      <div class="demo-box" style="border-radius:var(--radius-md); box-shadow:var(--shadow-sm); border-color:transparent">shadow sm</div>
+      <div class="demo-box" style="border-radius:var(--radius-md); box-shadow:var(--shadow-md); border-color:transparent">shadow md</div>
+      <div class="demo-box" style="border-radius:var(--radius-md); box-shadow:var(--shadow-lg); border-color:transparent">shadow lg</div>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section>
+    <h2>Components</h2>
+    <div class="components">
+      <div class="btn-row">
+        <button class="btn btn-primary">Add to cart</button>
+        <button class="btn btn-secondary">Compare</button>
+        <button class="btn btn-disabled" disabled>Add to cart</button>
+      </div>
+
+      <div class="badge-row">
+        <span class="badge badge-success">✓ Meets your standards</span>
+        <span class="badge badge-error">✕ Contains an avoided ingredient</span>
+        <span class="badge badge-cert">EWG Verified</span>
+        <span class="badge badge-cert">USDA Organic</span>
+      </div>
+
+      <div class="card">
+        <div class="badge-row" style="margin-bottom:var(--space-sm)"><span class="badge badge-success">✓ Meets your standards</span></div>
+        <h3>Branch Basics Concentrate</h3>
+        <p>Fragrance-free, plant-based, and EWG Verified. From a brand on your trusted list.</p>
+        <button class="btn btn-primary">Add to cart</button>
+      </div>
+
+      <div class="field">
+        <label for="demo-input">Ask Clean Shopper</label>
+        <input id="demo-input" type="text" placeholder="e.g. a fragrance-free all-purpose cleaner" />
+      </div>
+
+      <p class="d-body">Recommendations link out to where you can buy them, like <a class="demo-link" href="#">this all-purpose cleaner</a>, styled with the accent color.</p>
+    </div>
+  </section>
+
+  <footer class="page">
+    Generated by the Design System Generator skill. Edit design.md to change the system, then regenerate this page.
+  </footer>
+
+</div>
+</body>
+</html>
