@@ -9,8 +9,11 @@ Before creating or changing any UI — components, pages, styles, layout, copy i
 
 ## References
 - [docs/project-context.md](docs/project-context.md) — Clean Shopper project context document (problem, ICP, solution, constraints, open questions).
+- [docs/feature-plan.md](docs/feature-plan.md) — Feature plan & phasing. V1 (Phase 1) is locked to five features; chat/agent is deferred to V2 (Phase 2).
+- [docs/build-plan.md](docs/build-plan.md) — V1 build plan: dependency-ordered build sessions (DB/Supabase first), each with context, a demonstrable definition of done, and what the next session opens with.
 - [docs/design.md](docs/design.md) — Design system source of truth (see the rule above). [docs/design-system.html](docs/design-system.html) visualizes it.
 - [docs/component-spec.md](docs/component-spec.md) — Component spec: use existing components before creating new ones. Follow the spec for props, states, and visual structure.
+- [docs/database-schema.md](docs/database-schema.md) — Supabase database schema (explained). Canonical SQL lives in [supabase/migrations/](supabase/migrations/).
 - [tailwind.config.js](tailwind.config.js) — Design tokens as Tailwind theme extensions. Always use theme classes, never hardcode values.
 - [.claude/skills/prompt-optimizer/SKILL.md](.claude/skills/prompt-optimizer/SKILL.md) — Use /prompt-optimizer to evaluate and refine instructions before sending them.
 - [.claude/skills/project-context/SKILL.md](.claude/skills/project-context/SKILL.md) — Use /project-context to generate a structured project context document from a brief, PRD, or rough notes.

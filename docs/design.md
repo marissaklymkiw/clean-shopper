@@ -18,21 +18,22 @@ State the role of every color. Do not add colors outside this list.
 | Surface | `#FFFFFF` | Cards, raised panels, message bubbles, inputs |
 | Text primary | `#23291F` | Headings and body text (deep warm green-charcoal) |
 | Text muted | `#5E6356` | Secondary text, captions, metadata |
-| Accent | `#2B8463` | Primary actions, links, emphasis, brand (vivid jade green) |
-| Accent hover | `#237055` | Hover/active state of accent |
+| Accent | `#237055` | Primary actions, links, emphasis, brand (forest jade green) |
+| Accent hover | `#1C5944` | Hover/active state of accent |
 | Border | `#E7E2D8` | Dividers, input borders, card outlines (warm sand) |
 | Success | `#2F7D4F` | "Meets your standards" / positive states |
-| Warning | `#B8860B` | "Check this" / caution states (warm amber) |
+| Warning | `#7A5C00` | "Check this" / caution states (dark amber) |
 | Error | `#B23B33` | Avoided ingredient flag, errors, destructive actions |
 | Info | `#3A6E8F` | Neutral informational states (muted slate blue) |
 
-**Contrast check (WCAG AA):**
-- Text primary on Background: **~14:1** (pass — exceeds AAA 7:1 for body)
-- Text muted on Background: **~5.8:1** (pass — body 4.5:1)
-- Accent text (white) on Accent background: **~4.6:1** (pass — body 4.5:1; safe for button labels)
-- Accent on Background (links): **~4.3:1** (large text/UI pass at 3:1; just under body 4.5:1 — see note)
-
-> Note: One accent only, per the chosen "neutral + one accent" direction. The accent was brightened to a vivid jade (`#2B8463`) per request. At this lightness, white-on-accent button labels still clear AA (~4.6:1), but accent-colored *body-size link text* on the cream background lands at ~4.3:1, marginally below AA 4.5:1. Links are underlined (a non-color affordance), and for dense link-heavy text use **Accent hover** (`#237055`, ~5.6:1 on background) as the resting link color to stay fully AA. Going lighter (e.g. the originally requested `#3A9D7C`) would drop white-on-accent to ~3.3:1 and fail AA for button labels. Success (`#2F7D4F`) reads as a warmer, more yellow-green than the cooler jade accent, so a "meets your standards" badge stays distinguishable from brand chrome.
+**Contrast check (WCAG 2.2 AA — all values confirmed passing):**
+- Text primary on Background: **~14:1** (exceeds AAA)
+- Text muted on Background: **~5.5:1** (pass)
+- White on Accent background: **~5.7:1** (pass — safe for button labels at all sizes)
+- Accent text on Background: **~5.4:1** (pass — fully AA at all text sizes including Small)
+- Warning text on Background: **~5.9:1** (pass)
+- Success text on Background: **~4.8:1** (pass)
+- Error text on Background: **~5.6:1** (pass)
 
 ---
 
@@ -58,9 +59,17 @@ Headings use Fraunces; everything else uses Plus Jakarta Sans. Body weight 400 w
 
 ## 3. Spacing, radius, elevation
 
-**Spacing scale** (base 4px, generous at the top end): `xs 4px · sm 8px · md 16px · lg 24px · xl 40px · 2xl 64px`
+**Spacing scale** (base 4px, generous at the top end): `xs 4px · sm 8px · md 16px · lg 24px · xl 40px · 2xl 64px · 3xl 96px`
 **Radius:** `sm 6px · md 10px · lg 16px · full 9999px` (soft, never sharp — matches the warm direction)
 **Shadow:** soft, diffuse, warm-tinted (using the dark green-charcoal at low opacity) rather than hard neutral drops.
+
+**Breakpoints** (Tailwind defaults, no custom overrides needed):
+- `sm` 640px — two-column product grid; single-column below this
+- `md` 768px — NavBar shows all nav items; below this, nav links are hidden (mobile-first layout)
+- `lg` 1024px — three-column product grid
+- `xl` 1280px — max content width (enforced via `max-w-6xl` container)
+
+These map directly to Tailwind's built-in `sm:` / `md:` / `lg:` / `xl:` prefixes — no additions to `tailwind.config.js` needed.
 - `sm`: `0 1px 2px rgba(35,41,31,0.05)`
 - `md`: `0 6px 18px rgba(35,41,31,0.07)`
 - `lg`: `0 16px 40px rgba(35,41,31,0.10)`
@@ -73,12 +82,15 @@ Describe each in terms of the tokens above.
 
 **Button — primary:** background Accent, text `#FFFFFF`, radius `md`, padding `sm` vertical / `lg` horizontal, weight 500, hover Accent hover. Used for the single most important action in a view (e.g. "Add to cart").
 **Button — secondary:** transparent background, text Accent, 1px Accent border, radius `md`, same padding. Hover: Accent-hover text and border, optional faint Accent tint fill. Used for alternative actions (e.g. "Compare").
+**Button — ghost:** 1px Border border, text Text muted, transparent background, radius `md`, padding `xs` vertical / `sm` horizontal, Small type. Hover: Border → Accent border, text → Accent. Use for low-priority inline actions (e.g. Quick Add on a product card) where primary and secondary would compete with the primary content hierarchy.
 **Button — disabled:** background Border, text Text muted, no border, `not-allowed` cursor, no hover change.
-**Card:** background Surface, 1px Border, radius `lg`, shadow `md`, padding `lg`. The default container for product results and recommendations.
+**Card:** background Surface, 1px Border, radius `lg`, shadow `md`, padding `lg`. The default container for product results and recommendations. When a brand name is present it renders above the product title: Small type, Text muted, uppercase, `tracking-wide` (Tailwind default wide letter-spacing). The title follows immediately below in H3 / Fraunces.
 **Input:** background Surface, 1px Border, radius `md`, padding `sm`/`md`, Text primary. Focus: 2px Accent outline with 1px offset and Accent border. Used for the chat composer and preference fields.
 **Link:** color Accent, underline with 2px offset, hover Accent hover. Inline links in body and message copy.
 
-**Badges (clean-standards signals):** small pills at `small` size, radius `full`. "Meets your standards" → Success text on a faint Success tint; "Avoided ingredient" → Error text on a faint Error tint; certification chips → Text muted on Surface with a Border outline. Keep them quiet so they inform without alarming.
+**Navbar:** background Background (matches page canvas — no white lift), bottom 1px Border, shadow `sm`, no radius, padding `sm` vertical / `lg` horizontal. Brand wordmark in `font-display` at the `H3` token, Text primary; nav items at `Body` weight 500, Text muted with Accent on the active/hover item; Cart button uses the primary Button style (Accent fill, white text). The persistent top bar across every view — holds the brand, primary navigation, and cart entry point.
+
+**Badges (clean-standards signals):** small pills at the `Small` type token (0.8rem, **weight 400** — no extra emphasis), radius `full`, always with a 1px colored border. "Clean" → Success text, Success/10 tint fill, Success border; "Caution" → Warning text, Warning/10 tint fill, Warning border; "Avoid" → Error text, Error/10 tint fill, Error border; certification chips → Text muted, Surface fill, Border outline. All three safety variants use the same bordered-pill treatment as certifications for visual consistency. Emphasis comes from the tint + border combination, not weight — keep them informative without alarming.
 
 ---
 
@@ -99,11 +111,11 @@ Describe each in terms of the tokens above.
   --color-surface: #FFFFFF;
   --color-text: #23291F;
   --color-text-muted: #5E6356;
-  --color-accent: #2B8463;
-  --color-accent-hover: #237055;
+  --color-accent: #237055;
+  --color-accent-hover: #1C5944;
   --color-border: #E7E2D8;
   --color-success: #2F7D4F;
-  --color-warning: #B8860B;
+  --color-warning: #7A5C00;
   --color-error: #B23B33;
   --color-info: #3A6E8F;
 
@@ -155,10 +167,10 @@ export default {
         bg: "#FAF7F1",
         surface: "#FFFFFF",
         text: { DEFAULT: "#23291F", muted: "#5E6356" },
-        accent: { DEFAULT: "#2B8463", hover: "#237055" },
+        accent: { DEFAULT: "#237055", hover: "#1C5944" },
         border: "#E7E2D8",
         success: "#2F7D4F",
-        warning: "#B8860B",
+        warning: "#7A5C00",
         error: "#B23B33",
         info: "#3A6E8F",
       },

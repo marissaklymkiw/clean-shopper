@@ -31,26 +31,28 @@ These are the exact Tailwind classes available (from `theme.extend`):
 | `name` | `string` | required | Product name (card title). |
 | `safety` | `"clean" \| "caution" \| "avoid"` | required | Verdict; drives the `SafetyBadge`. |
 | `score` | `number` | optional | 0–100 safety score shown alongside the verdict label (e.g. "Clean · 92"). |
+| `brand` | `string` | optional | Brand name rendered above the product title in small uppercase caps. |
 | `category` | `string` | required | Category label (rendered as a `CategoryTag`). |
-| `description` | `string` | required | Short reasoning / summary. |
-| `price` | `string` | optional | Display price; shows the footer + CTA when present. |
+| `description` | `string` | optional | Short reasoning / summary. Omit when the card has no per-product copy (e.g. browse listing). |
+| `price` | `string` | optional | Display price string. |
 | `imageUrl` | `string` | optional | Product thumbnail. |
 | `loading` | `boolean` | optional | Render the skeleton instead of content. |
-| `onAddToCart` | `() => void` | optional | Renders a primary `Button` when provided. |
+| `onCardClick` | `() => void` | optional | Makes the entire card a clickable hit target (navigate to detail). |
+| `onQuickAdd` | `() => void` | optional | Renders the ghost Quick Add button when provided. Fires without navigating. |
 | `className` | `string` | optional | Layout overrides (width, grid placement). |
 
 **Visual structure**
 
 - Container: `<article>` — `flex flex-col gap-md rounded-lg border border-border bg-surface p-lg shadow-md`.
-- Header row: `flex items-start justify-between gap-sm` — title `font-display text-h3 text-text`; `SafetyBadge` aligned right (`shrink-0`).
+- Header row: `flex items-start justify-between gap-sm` — left side is a `flex flex-col gap-xs` column containing: optional brand label (`font-body text-small uppercase tracking-wide text-text-muted`) above the title (`font-display text-h3 text-text`); `SafetyBadge` aligned right (`shrink-0`).
 - `CategoryTag` on its own row (`self-start`).
 - Description: `text-body text-text-muted`.
-- Optional footer: `flex items-center justify-between gap-md` — price `text-body text-text`; primary `Button` for add-to-cart.
+- Quick Add (when `onQuickAdd` provided): `absolute bottom-md right-md` — ghost icon button (`rounded-full border border-border bg-surface px-md py-xs text-small text-text-muted`), `opacity-0` at rest, `group-hover:opacity-100` on card hover, `focus-visible:opacity-100` for keyboard access. Stops propagation so it doesn't trigger card navigation. `aria-label="Quick add to cart"`.
 
 **States**
 
 - **Default:** `shadow-md`.
-- **Hover:** `hover:shadow-lg transition-shadow` (lifts on pointer).
+- **Hover:** `hover:shadow-lg transition-shadow` (lifts on pointer). When `onCardClick` is provided, cursor is `pointer` and the card is keyboard-accessible (`role="button"`, `tabIndex=0`, Enter key fires the handler).
 - **Loading:** skeleton blocks `bg-border/40 rounded-md animate-pulse` in place of title/description; no badge.
 - **Empty / Error:** not handled here — an empty result set is an `EmptyState` at the list level; a failed fetch surfaces at the list/page level, not per-card.
 
@@ -142,24 +144,26 @@ These are the exact Tailwind classes available (from `theme.extend`):
 | Prop | Type | Required | Notes |
 |------|------|----------|-------|
 | `label` | `string` | required | Tag text (e.g. "All-purpose cleaner", "EWG Verified"). |
-| `interactive` | `boolean` | optional | Enables hover affordance when used as a filter. |
+| `interactive` | `boolean` | optional | Enables the hover/selected affordances when used as a filter. |
+| `selected` | `boolean` | optional | Selected state for interactive filter chips — accent fill. |
 | `onClick` | `() => void` | optional | Filter selection handler. |
 | `className` | `string` | optional | Layout overrides. |
 
 **Visual structure**
 
-- `inline-flex items-center self-start rounded-full border border-border bg-surface px-sm py-xs text-small text-text-muted`.
+- `inline-flex items-center rounded-full border border-border bg-surface px-sm py-xs text-small text-text-muted`.
 
 **States**
 
 - **Default:** static, `text-text-muted` on a `border-border` outline.
 - **Hover (only when `interactive`):** `hover:border-accent hover:text-accent`.
+- **Selected (interactive filter chips only):** `border-accent bg-accent text-surface`.
 - No loading / empty / error states.
 
 **Usage rules**
 
-- **Use** for category labels and certification chips (EWG Verified, USDA Organic, B Corp).
-- **Don't use** for safety verdicts (use `SafetyBadge`) and don't fill it with color — keep it quiet so the verdict badge stays the focal signal.
+- **Use** for category labels and certification chips (EWG Verified, USDA Organic, B Corp), and as filter chips via the `interactive` variant.
+- **Don't use** for safety verdicts (use `SafetyBadge`), and don't color-fill the *static label* variant — keep labels quiet so the verdict badge stays the focal signal. Accent fill is reserved for the *selected* state of interactive filter chips.
 
 ---
 
@@ -173,6 +177,8 @@ These are the exact Tailwind classes available (from `theme.extend`):
 |------|------|----------|-------|
 | `active` | `"home" \| "chat" \| "compare" \| "preferences"` | optional | Highlights the current section. Defaults to `"home"`. |
 | `cartCount` | `number` | optional | Item count badge on the cart control. |
+| `searchQuery` | `string` | optional | Controlled value for the inline search field. Field is hidden when `onSearchChange` is not provided. |
+| `onSearchChange` | `(value: string) => void` | optional | Fires on each keystroke. Providing this prop renders the inline search field. |
 | `onNavigate` | `(key: "home" \| "chat" \| "compare" \| "preferences") => void` | optional | Nav-item click handler. |
 | `onOpenCart` | `() => void` | optional | Cart click handler. |
 | `className` | `string` | optional | Layout overrides. |
@@ -180,7 +186,8 @@ These are the exact Tailwind classes available (from `theme.extend`):
 **Visual structure**
 
 - Container: `<header>` — `flex items-center justify-between gap-lg bg-surface border-b border-border px-lg py-sm shadow-sm`.
-- Brand wordmark: `font-display text-h3 text-text`.
+- Brand wordmark: `font-display text-h3 text-text shrink-0`.
+- Search field (when `onSearchChange` provided): `flex-1 max-w-sm` wrapper; `<input type="search">` — `w-full rounded-md border border-border bg-surface px-md py-sm text-body text-text placeholder:text-text-muted`. Focus: `border-accent outline-2 outline-accent outline-offset-1`. A ✕ clear button (`aria-label="Clear search"`) appears at `absolute right-sm` when query is non-empty.
 - Nav: `flex items-center gap-lg`; items are Home, Chat, Compare, Preferences, each `text-body font-medium text-text-muted`.
 - Cart: secondary `Button` with a count pill — `rounded-full bg-accent text-surface text-small px-sm`.
 
@@ -217,14 +224,15 @@ These are the exact Tailwind classes available (from `theme.extend`):
 
 **Visual structure**
 
-- Base (both variants): `inline-flex items-center justify-center gap-sm rounded-md px-lg py-sm text-body font-medium transition-colors`.
-- **Primary:** `bg-accent text-surface`.
-- **Secondary:** `bg-transparent text-accent border border-accent`.
+- Base (all variants): `inline-flex items-center justify-center gap-sm rounded-md text-body font-medium transition-colors`.
+- **Primary:** `bg-accent text-surface px-lg py-sm`.
+- **Secondary:** `bg-transparent text-accent border border-accent px-lg py-sm`.
+- **Ghost:** `bg-transparent border border-border text-text-muted px-sm py-xs text-small`. Hover: `border-accent text-accent`. Use for low-priority inline actions (e.g. Quick Add on a card) where primary/secondary would compete with the content hierarchy.
 
 **States**
 
 - **Default:** as above.
-- **Hover:** primary `hover:bg-accent-hover`; secondary `hover:text-accent-hover hover:border-accent-hover hover:bg-accent/5`.
+- **Hover:** primary `hover:bg-accent-hover`; secondary `hover:text-accent-hover hover:border-accent-hover hover:bg-accent/5`; ghost `hover:border-accent hover:text-accent`.
 - **Focus:** `focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`.
 - **Loading:** spinner + `aria-busy`; pointer events disabled.
 - **Disabled:** `bg-border text-text-muted border-transparent cursor-not-allowed`, no hover change.
@@ -313,6 +321,39 @@ These are the exact Tailwind classes available (from `theme.extend`):
 
 - **Use** for the empty cart, the pre-conversation chat surface, and no-results states.
 - **Don't use** for transient loading (use skeletons) and don't hide the primary recovery action below the fold.
+
+---
+
+## 9. ChatBubble
+
+**Purpose:** A single message in the AI chat conversation — either a user query or an assistant reply.
+
+**Props**
+
+| Prop | Type | Required | Notes |
+|------|------|----------|-------|
+| `role` | `"user" \| "assistant"` | required | Drives alignment and color. |
+| `content` | `string` | required | Message text. |
+| `loading` | `boolean` | optional | Shows a pulsing placeholder for an in-flight assistant reply. |
+
+**Visual structure**
+
+- Outer row: `flex` — `justify-end` for `user`, `justify-start` for `assistant`.
+- Bubble: `max-w-[75%] rounded-lg px-md py-sm text-body`.
+  - `user` → `bg-accent text-surface rounded-br-sm`.
+  - `assistant` → `bg-surface text-text border border-border shadow-sm rounded-bl-sm`.
+- Loading placeholder: three pulsing dots (`bg-border/60 rounded-full animate-pulse`) inside the assistant bubble shell.
+
+**States**
+
+- **Default:** as above.
+- **Loading:** assistant variant with an animated dot trio in place of text. Used while the API request is in flight.
+- No hover / error / empty states — errors surface at the page level.
+
+**Usage rules**
+
+- **Use** only inside the ChatPage message list — one bubble per message.
+- **Don't use** for non-chat content (notifications, toasts). Keep bubbles text-only; product cards are rendered as siblings in the list, not inside a bubble.
 
 ---
 

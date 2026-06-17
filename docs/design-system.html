@@ -15,11 +15,11 @@
     --color-surface: #FFFFFF;
     --color-text: #23291F;
     --color-text-muted: #5E6356;
-    --color-accent: #2B8463;
-    --color-accent-hover: #237055;
+    --color-accent: #237055;
+    --color-accent-hover: #1C5944;
     --color-border: #E7E2D8;
     --color-success: #2F7D4F;
-    --color-warning: #B8860B;
+    --color-warning: #7A5C00;
     --color-error: #B23B33;
     --color-info: #3A6E8F;
 
@@ -130,26 +130,52 @@
   .btn-disabled { background: var(--color-border); color: var(--color-text-muted); cursor: not-allowed; }
   .btn-row { display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center; }
 
+  /* product card */
   .card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     padding: var(--space-lg);
-    max-width: 360px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
   }
-  .card h3 { font-family: var(--font-display); font-size: var(--text-h3); font-weight: 500; margin: 0 0 var(--space-sm); }
-  .card p { margin: 0 0 var(--space-md); color: var(--color-text-muted); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-lg); }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-sm); }
+  .card-meta { display: flex; flex-direction: column; gap: 2px; }
+  .card-brand { font-size: var(--text-small); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .card h3 { font-family: var(--font-display); font-size: var(--text-h3); font-weight: 500; margin: 0; }
+  .card-cat {
+    align-self: flex-start;
+    font-size: var(--text-small); color: var(--color-text-muted);
+    border: 1px solid var(--color-border); border-radius: var(--radius-full);
+    padding: 2px var(--space-sm); background: var(--color-surface);
+  }
+  /* actions row — shown always here for demo; in the app these fade in on card hover */
+  .card-actions { display: flex; gap: var(--space-sm); }
+  .card-action {
+    font-family: var(--font-body); font-size: var(--text-small); font-weight: 400;
+    padding: 2px var(--space-sm); border-radius: var(--radius-full); cursor: pointer;
+    border: 1px solid var(--color-border); background: var(--color-surface);
+    color: var(--color-text-muted); transition: border-color 0.15s, color 0.15s;
+  }
+  .card-action:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .card-action.active { border-color: var(--color-accent); background: var(--color-surface); color: var(--color-accent); }
+  .card-action.in-cart { border-color: var(--color-accent); background: var(--color-accent); color: #fff; }
+  .card-note { font-size: var(--text-small); color: var(--color-text-muted); font-style: italic; }
 
   /* clean-standards badges */
   .badge-row { display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center; }
   .badge {
-    font-size: var(--text-small); font-weight: 600;
+    font-size: var(--text-small); font-weight: 400;
     padding: 2px var(--space-sm); border-radius: var(--radius-full);
     display: inline-flex; align-items: center; gap: 4px; line-height: 1.4;
   }
-  .badge-success { color: var(--color-success); background: rgba(47,125,79,0.12); }
-  .badge-error { color: var(--color-error); background: rgba(178,59,51,0.12); }
+  .badge-success { color: var(--color-success); background: rgba(47,125,79,0.10); border: 1px solid var(--color-success); }
+  .badge-warning { color: var(--color-warning); background: rgba(122,92,0,0.10); border: 1px solid var(--color-warning); }
+  .badge-error { color: var(--color-error); background: rgba(178,59,51,0.10); border: 1px solid var(--color-error); }
   .badge-cert { color: var(--color-text-muted); background: var(--color-surface); border: 1px solid var(--color-border); }
 
   .field { display: flex; flex-direction: column; gap: var(--space-xs); max-width: 360px; }
@@ -185,16 +211,16 @@
       <div class="swatch"><div class="chip" style="background:var(--color-surface)"></div><div class="meta"><div class="name">Surface</div><div class="hex">#FFFFFF</div><div class="use">Cards, messages</div></div></div>
       <div class="swatch"><div class="chip" style="background:var(--color-text)"></div><div class="meta"><div class="name">Text primary</div><div class="hex">#23291F</div><div class="use">Headings, body</div></div></div>
       <div class="swatch"><div class="chip" style="background:var(--color-text-muted)"></div><div class="meta"><div class="name">Text muted</div><div class="hex">#5E6356</div><div class="use">Secondary text</div></div></div>
-      <div class="swatch"><div class="chip" style="background:var(--color-accent)"></div><div class="meta"><div class="name">Accent</div><div class="hex">#2B8463</div><div class="use">Actions, links</div></div></div>
-      <div class="swatch"><div class="chip" style="background:var(--color-accent-hover)"></div><div class="meta"><div class="name">Accent hover</div><div class="hex">#237055</div><div class="use">Hover state</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-accent)"></div><div class="meta"><div class="name">Accent</div><div class="hex">#237055</div><div class="use">Actions, links</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-accent-hover)"></div><div class="meta"><div class="name">Accent hover</div><div class="hex">#1C5944</div><div class="use">Hover state</div></div></div>
       <div class="swatch"><div class="chip" style="background:var(--color-border)"></div><div class="meta"><div class="name">Border</div><div class="hex">#E7E2D8</div><div class="use">Dividers, inputs</div></div></div>
       <div class="swatch"><div class="chip" style="background:var(--color-success)"></div><div class="meta"><div class="name">Success</div><div class="hex">#2F7D4F</div><div class="use">Meets standards</div></div></div>
-      <div class="swatch"><div class="chip" style="background:var(--color-warning)"></div><div class="meta"><div class="name">Warning</div><div class="hex">#B8860B</div><div class="use">Check this</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--color-warning)"></div><div class="meta"><div class="name">Warning</div><div class="hex">#7A5C00</div><div class="use">Check this</div></div></div>
       <div class="swatch"><div class="chip" style="background:var(--color-error)"></div><div class="meta"><div class="name">Error</div><div class="hex">#B23B33</div><div class="use">Avoided / errors</div></div></div>
       <div class="swatch"><div class="chip" style="background:var(--color-info)"></div><div class="meta"><div class="name">Info</div><div class="hex">#3A6E8F</div><div class="use">Information</div></div></div>
     </div>
     <p class="d-small" style="margin-top:var(--space-md)">
-      Contrast (WCAG AA): Text primary on Background ~14:1 (passes AAA) · Text muted on Background ~5.8:1 (pass) · White on Accent ~4.6:1 (pass) · Accent links on Background ~4.3:1 (under body 4.5:1 — links are underlined; use Accent hover ~5.6:1 for dense link text).
+      Contrast (WCAG 2.2 AA — all values confirmed): Text primary on Background ~14:1 (AAA) · Text muted on Background ~5.5:1 · White on Accent ~5.7:1 · Accent text on Background ~5.4:1 · Warning text on Background ~5.9:1 · Success text on Background ~4.8:1 · Error text on Background ~5.6:1.
     </p>
   </section>
 
@@ -246,17 +272,64 @@
       </div>
 
       <div class="badge-row">
-        <span class="badge badge-success">✓ Meets your standards</span>
-        <span class="badge badge-error">✕ Contains an avoided ingredient</span>
+        <span class="badge badge-success">Clean · 90</span>
+        <span class="badge badge-warning">Caution · 46</span>
+        <span class="badge badge-error">Avoid · 18</span>
         <span class="badge badge-cert">EWG Verified</span>
         <span class="badge badge-cert">USDA Organic</span>
       </div>
 
-      <div class="card">
-        <div class="badge-row" style="margin-bottom:var(--space-sm)"><span class="badge badge-success">✓ Meets your standards</span></div>
-        <h3>Branch Basics Concentrate</h3>
-        <p>Fragrance-free, plant-based, and EWG Verified. From a brand on your trusted list.</p>
-        <button class="btn btn-primary">Add to cart</button>
+      <p class="card-note">Product cards — three safety states. Actions (Save / Cart) appear on hover; shown here for reference.</p>
+      <div class="card-grid">
+
+        <!-- Clean card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-brand">Branch Basics</span>
+              <h3>Concentrate Starter Kit</h3>
+            </div>
+            <span class="badge badge-success" style="flex-shrink:0;margin-top:2px">Clean · 86</span>
+          </div>
+          <span class="card-cat">All-Purpose Cleaner</span>
+          <div class="card-actions">
+            <button class="card-action active">Saved ♥</button>
+            <button class="card-action in-cart">In cart</button>
+          </div>
+        </div>
+
+        <!-- Caution card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-brand">Sparkleco</span>
+              <h3>Antibacterial Hand Soap</h3>
+            </div>
+            <span class="badge badge-warning" style="flex-shrink:0;margin-top:2px">Caution · 40</span>
+          </div>
+          <span class="card-cat">Hand Soap</span>
+          <div class="card-actions">
+            <button class="card-action">Save ♡</button>
+            <button class="card-action">+ Cart</button>
+          </div>
+        </div>
+
+        <!-- Avoid card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-meta">
+              <span class="card-brand">Freshscent</span>
+              <h3>Dryer Sheets Original</h3>
+            </div>
+            <span class="badge badge-error" style="flex-shrink:0;margin-top:2px">Avoid · 18</span>
+          </div>
+          <span class="card-cat">Laundry</span>
+          <div class="card-actions">
+            <button class="card-action">Save ♡</button>
+            <button class="card-action">+ Cart</button>
+          </div>
+        </div>
+
       </div>
 
       <div class="field">
