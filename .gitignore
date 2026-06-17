@@ -15,6 +15,14 @@ dist-ssr
 # Env (keep .env.example tracked)
 .env
 
+# Claude Code internals and scratch files
+.claude/
+deploy-chat.mjs
+navbar-preview.html
+product-card-preview.html
+prompt-optimizer.html
+docs/ai-tool-tracker-context.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
