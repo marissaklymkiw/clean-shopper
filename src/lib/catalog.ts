@@ -90,9 +90,9 @@ export async function getProducts(options?: { categoryId?: string; categoryIds?:
     return {
       id: row.id,
       name: row.name,
-      brand: (row.brands as { name: string } | null)?.name ?? null,
+      brand: (row.brands as unknown as { name: string } | null)?.name ?? null,
       categoryId: row.category_id,
-      categoryName: (row.categories as { name: string } | null)?.name ?? '',
+      categoryName: (row.categories as unknown as { name: string } | null)?.name ?? '',
       imageUrl: row.image_url,
       cleanScore: score,
       safety: scoreToSafety(score),
@@ -121,7 +121,7 @@ export async function getProductById(id: string): Promise<ProductDetail | null> 
   const score = data.clean_score ?? 0
 
   const ingredients: Ingredient[] = (
-    (data.product_ingredients as Array<{
+    (data.product_ingredients as unknown as Array<{
       position: number
       ingredients: { name: string; concern_level: string; concern_reason: string | null }
     }>) ?? []
@@ -135,7 +135,7 @@ export async function getProductById(id: string): Promise<ProductDetail | null> 
     .sort((a, b) => a.position - b.position)
 
   const certifications: Certification[] = (
-    (data.product_certifications as Array<{
+    (data.product_certifications as unknown as Array<{
       certifications: { slug: string; name: string }
     }>) ?? []
   ).map((pc) => ({
@@ -146,9 +146,9 @@ export async function getProductById(id: string): Promise<ProductDetail | null> 
   return {
     id: data.id,
     name: data.name,
-    brand: (data.brands as { name: string } | null)?.name ?? null,
+    brand: (data.brands as unknown as { name: string } | null)?.name ?? null,
     categoryId: data.category_id,
-    categoryName: (data.categories as { name: string } | null)?.name ?? '',
+    categoryName: (data.categories as unknown as { name: string } | null)?.name ?? '',
     imageUrl: data.image_url,
     barcode: data.barcode,
     retailerUrl: data.retailer_url,
@@ -274,13 +274,13 @@ export async function getCategoryContext(categoryId: string): Promise<CategoryCo
   if (error) throw error
 
   const categoryName =
-    (data[0]?.categories as { name: string } | null)?.name ?? 'this category'
+    (data[0]?.categories as unknown as { name: string } | null)?.name ?? 'this category'
 
   const products: CategoryContextProduct[] = data.map((row) => {
     const score = row.clean_score ?? 0
 
     const ingredients = (
-      (row.product_ingredients as Array<{
+      (row.product_ingredients as unknown as Array<{
         position: number
         ingredients: { name: string; concern_level: string; concern_reason: string | null }
       }>) ?? []
@@ -293,12 +293,12 @@ export async function getCategoryContext(categoryId: string): Promise<CategoryCo
       }))
 
     const certifications = (
-      (row.product_certifications as Array<{ certifications: { name: string } }>) ?? []
+      (row.product_certifications as unknown as Array<{ certifications: { name: string } }>) ?? []
     ).map((pc) => pc.certifications.name)
 
     return {
       name: row.name,
-      brand: (row.brands as { name: string } | null)?.name ?? null,
+      brand: (row.brands as unknown as { name: string } | null)?.name ?? null,
       cleanScore: score,
       safety: scoreToSafety(score),
       ingredients,
@@ -412,9 +412,9 @@ export async function searchProducts(query: string): Promise<ProductSummary[]> {
     return {
       id: row.id,
       name: row.name,
-      brand: (row.brands as { name: string } | null)?.name ?? null,
+      brand: (row.brands as unknown as { name: string } | null)?.name ?? null,
       categoryId: row.category_id,
-      categoryName: (row.categories as { name: string } | null)?.name ?? '',
+      categoryName: (row.categories as unknown as { name: string } | null)?.name ?? '',
       imageUrl: row.image_url,
       cleanScore: score,
       safety: scoreToSafety(score),
