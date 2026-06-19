@@ -33,3 +33,6 @@ docs/ai-tool-tracker-context.md
 *.njsproj
 *.sln
 *.sw?
+
+*storybook.log
+storybook-static
